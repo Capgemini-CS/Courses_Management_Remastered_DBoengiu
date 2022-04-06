@@ -64,4 +64,8 @@ public class StudentService {
                 .map(student -> studentMapper.getDTOFromEntity(student))
                 .collect(Collectors.toList());
     }
+
+    public void deleteStudentById(Integer id) {
+        studentRepository.deleteById(id);
+    }
 }

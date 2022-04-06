@@ -16,9 +16,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -68,6 +68,17 @@ class StudentControllerTest {
 
         when(studentRepository.findAll()).thenReturn(students);
         mockMvc.perform(get("/students/"))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+
+    @Test
+    void shouldDeleteTutorial() throws Exception {
+        int id = 1;
+
+        doNothing().when(studentRepository).deleteById(id);
+        mockMvc.perform(delete("/students/{id}", id))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
