@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/students")
@@ -41,6 +42,11 @@ public class StudentController {
     @GetMapping("/filter")
     public ResponseEntity<Page<Student>> getStudents(StudentPage studentPage, StudentSearchCriteria studentSearchCriteria) {
         return new ResponseEntity<>(studentService.getStudents(studentPage, studentSearchCriteria), HttpStatus.OK);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<StudentDTO>> getAllStudents() {
+        return new ResponseEntity<>(studentService.getAllStudents(), HttpStatus.OK);
     }
 
 }

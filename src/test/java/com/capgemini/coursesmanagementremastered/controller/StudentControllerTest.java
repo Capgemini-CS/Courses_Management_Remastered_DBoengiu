@@ -11,12 +11,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(StudentController.class)
@@ -52,6 +56,19 @@ class StudentControllerTest {
 
         when(studentRepository.findById(id)).thenReturn(Optional.of(student));
         mockMvc.perform(get("/students/{id}", id)).andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    void shouldReturnListOfStudents() throws Exception {
+        List<Student> students = new ArrayList<>(
+                Arrays.asList(new Student(1, "John", "Doe", 1, "1234567890123"),
+                        new Student(2, "Jane", "Smith", 2, "1234567890123"),
+                        new Student(3, "Jim", "Hook", 3, "1234567890123")));
+
+        when(studentRepository.findAll()).thenReturn(students);
+        mockMvc.perform(get("/students/"))
+                .andExpect(status().isOk())
                 .andDo(print());
     }
 

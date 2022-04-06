@@ -13,6 +13,9 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class StudentService {
 
@@ -54,5 +57,11 @@ public class StudentService {
 
     public Page<Student> getStudents(StudentPage studentPage, StudentSearchCriteria studentSearchCriteria){
         return studentCriteriaRepository.findAllWithFilters(studentPage, studentSearchCriteria);
+    }
+
+    public List<StudentDTO> getAllStudents() {
+        return studentRepository.findAll().stream()
+                .map(student -> studentMapper.getDTOFromEntity(student))
+                .collect(Collectors.toList());
     }
 }
